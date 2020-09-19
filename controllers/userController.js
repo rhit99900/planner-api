@@ -1,7 +1,7 @@
 const User = require('../models/user');
 
 module.exports = {
-  register (req, res, next){
+  async register (req, res){
     const newUser = new User({
       email: req.body.email,
       username: req.body.username,
@@ -12,16 +12,8 @@ module.exports = {
       is_admin: false,
       is_manager: false,
       is_collaborator: false,      
-    })
-
-    User.register(newUser, req.body.password, error => {
-      if(error){
-        console.log('Error');
-        return next(error);
-      }
-
-      console.log('Registered');
-      res.send('User Registered');
-    })
+    })    
+    const user = await User.register(newUser, req.body.password)
+    res.status(200).json(user);
   }
 }
