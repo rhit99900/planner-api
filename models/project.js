@@ -2,21 +2,20 @@ const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 const Schema = mongoose.Schema;
 
-const OrganisationSchema = new Schema({
+const ProjectSchema = new Schema({
   name: String,  
-  slug: String,
-  teams: [{
+  slug: String,  
+  tasks:[{
     type: Schema.Types.ObjectId,
-    ref: 'Team'
-  }],
-  members:[{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'Task'
   }],
   status: Number,
-
+  created_by: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }
 })
 
-OrganisationSchema.plugin(passportLocalMongoose);
+ProjectSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('Organisation',OrganisationSchema);
+module.exports = mongoose.model('Project',ProjectSchema);
