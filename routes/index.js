@@ -3,14 +3,21 @@ const router = express.Router();
 const { register } = require('../controllers/userController');
 const { handleErrors } = require('../middleware');
 
+const passport = require('passport');
+
 /* GET home page. */
-router.get('/', (req, res, next)  => {
+router.get('/', (req, res)  => {
   res.send('/');
 });
 
-router.post('/login', (req, res, next)  => {
-  res.send('/');
+router.post('/login', passport.authenticate('local'), (req, res)  => {
+  res.status(200).json();
 });
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.send('Logged Out');
+})
 
 router.post('/register', handleErrors(register));
 
