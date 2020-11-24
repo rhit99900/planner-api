@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const passport = require('passport');
 
 module.exports = {
   async register (req, res){
@@ -15,5 +16,18 @@ module.exports = {
     })    
     const user = await User.register(newUser, req.body.password)
     res.status(200).json(user);
+  },
+
+  async login (req, res){    
+    passport.authenticate('local', (error, user, info) => {
+      if(error) { res.status(500).json(error); }
+      if(!user){
+        res.status(404).json(info);
+      }
+      req.login(user, error => {
+        if(error) { res.status(404).json(error); }
+        return res.status(200).json(user);
+      })
+    })(req, res);
   }
 }

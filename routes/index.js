@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register } = require('../controllers/userController');
+const { register, login } = require('../controllers/userController');
 const { handleErrors } = require('../middleware');
 
 const passport = require('passport');
@@ -10,9 +10,7 @@ router.get('/', (req, res)  => {
   res.send('/');
 });
 
-router.post('/login', passport.authenticate('local'), (req, res)  => {
-  res.status(200).json();
-});
+router.post('/login', login);
 
 router.get('/logout', (req, res) => {
   req.logout();
